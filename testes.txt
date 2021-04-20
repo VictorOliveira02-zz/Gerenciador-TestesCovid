@@ -1,0 +1,99 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct livros{
+	
+	char nome[20];
+	char titulo[30];
+	int ano;
+	
+}livros;
+
+
+int main(){
+	
+	int i;
+	char NOME[20];
+	char TITULO[30];
+	int ano_lanc;
+	livros livro[3];
+	
+	//Preenchendo a struct
+	for( i = 0; i<3; i++){
+		
+		printf("\nDigite o titulo do livro: ");
+		fflush(stdin);
+		gets(livro[i].titulo);
+		
+		printf("\nDigite o nome do autor: ");
+		fflush(stdin);
+		gets(livro[i].nome);
+		
+		printf("\nDigite o ano que o livro foi lancado: ");
+		scanf("%d", &livro[i].ano);
+		strupr(livro[i].nome);
+		strupr(livro[i].titulo);
+		
+	}
+	
+	//procura o livro pelo titulo
+	printf("\nDigite o titulo da obra que deseja encontrar:");
+	fflush(stdin);
+	gets(TITULO);
+	strupr(TITULO);
+	
+	for(i=0;i<3;i++){
+		
+		if(strcmp(livro[i].titulo, TITULO)==0){
+			
+			printf("\nO autor da obra %s eh:\n",livro[i].titulo);
+			printf("\nAutor: %s\n",livro[i].nome);
+			printf("\nAno em que o livro %s foi lancado:\n",livro[i].titulo);
+			printf("\nAno: %d\n",livro[i].ano);
+			printf("\n-------------\n");
+			
+		}
+	}
+	
+	
+	
+	//prcura livros pelo nome do autor
+	printf("\nDigite o nome do autor que deseja encontrar:");
+	fflush(stdin);
+	gets(NOME);
+	strupr(NOME);
+	
+	for( i=0; i<3; i++){
+		
+		if(strcmp(livro[i].nome, NOME) == 0){
+			
+			printf("\nO autor %s lancou livros nos anos:\n", livro[i].nome);
+			printf("\nAno: %d\n", livro[i].ano);
+			printf("\nObras do autor %s:\n", livro[i].nome);
+			printf("\nObras: %s\n",livro[i].titulo);
+			printf("\n-------------\n");
+		}
+		
+	}
+	
+	//procura os livros pelo ano de lançamento
+	printf("\nDigite o ano em que o livro foi lancado:");
+	scanf("%d",&ano_lanc);
+	
+	for(i=0;i<3;i++){
+		
+		if(ano_lanc==livro[i].ano){
+			
+			printf("\nOs livros lancados no ano %d foram:\n",ano_lanc);
+			printf("\nObras: %s\n",livro[i].titulo);
+			printf("\nAutores do ano %d:\n",ano_lanc);
+			printf("\nAutor: %s",livro[i].nome);
+			printf("\n-------------\n");
+			
+		}
+	}
+	
+	
+	return 0;
+}
