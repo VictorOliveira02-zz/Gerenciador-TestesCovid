@@ -115,59 +115,96 @@ void Cadastrar_testes(Cadastro **testes, int *posicao)
   *posicao += num_testes;
 }
 
-//imprime cadatros
-void imprime_cad(Cadastro cadastro)
-{
-  printf("Nome: %s\n", cadastro.Nome);
-  printf("CPF: %s\n", cadastro.CPF);
-  printf("Data de Nascimento: %d/%d/%d\n", cadastro.nascimento.dia, cadastro.nascimento.mes, cadastro.nascimento.ano);
-  printf("Idade: %d anos\n", idade_atual(cadastro.nascimento.ano));
-  printf("Sexo: %c\n", cadastro.Sexo);
-  printf("Bairro: %s \n", cadastro.Bairro);
-  printf("COVID-19: %s \n", cadastro.COVID19);
-  printf("Valido: %c \n", cadastro.valido);
-}
+//imprime cadastro atraves do txt
+// void imprime_cad(Cadastro cadastro)
+// {
+//   FILE *pont_arq;
+//   int i;
 
-//consulta o teste pelo nome cadastrado.
-void consulta(char nome[], int quant_testes, Cadastro testes[])
-{
+//   pont_arq = fopen("TesteCovid2.txt", "r");
 
-  int i, aux;
+//   if (pont_arq == NULL)
 
-  aux = -1;
+//   {
 
-  //busca o nome com base na quantidade de testes.
-  for (i = 0; i <= quant_testes; i++)
-  {
+//     printf("ERRO NA  ABERTURA");
+//     return 1;
+//   }
 
-    if (strcmp(nome, testes[i].Nome) == 0)
-    {
-      //aux recebe o indice do teste
-      aux = i;
+//   for (i = *posicao; i < (num_testes + *posicao); i++)
+//   {
 
-      break;
-    }
-  }
+//     fprintf("Nome: %s\n", testes[i].Nome);
+//     fprintf("CPF: %s\n", testes[i].CPF);
+//     fprintf("Data de Nascimento: %d/%d/%d\n", testes[i].nascimento.dia, testes[i].nascimento.mes, testes[i].nascimento.ano);
+//     fprintf("Idade: %d anos\n", idade_atual(testes[i].nascimento.ano));
+//     fprintf("Sexo: %c\n", testes[i].Sexo);
+//     fprintf("Bairro: %s \n", testes[i].Bairro);
+//     fprintf("COVID-19: %s \n", testes[i].COVID19);
+//     fprintf("Valido: %s \n", testes[i].valido);
+//   }
 
-  //verifica se a pessoa possui um cadastro(reultado foi encontrado).
-  if (aux >= 0)
-  {
-    printf("\nNome: %s\n", testes[aux].Nome);
-    printf("CPF: %s\n", testes[aux].CPF);
-    printf("Data de Nascimento: %d/%d/%d\n", testes[aux].nascimento.dia, testes[aux].nascimento.mes, testes[aux].nascimento.ano);
-    printf("Idade: %d\n", idade_atual(testes[aux].nascimento.ano));
-    printf("Sexo: %c\n", testes[aux].Sexo);
-    printf("Bairro: %s \n", testes[aux].Bairro);
-    printf("COVID-19: %s \n", testes[aux].COVID19);
-    printf("Valido: %c \n ", testes[aux].valido);
-  }
-  else
-  {
-    printf("Nenhum teste encontrado!");
-  }
+//   fclose(pont_arq);
+// }
 
-  getchar();
-}
+// ///////////////////////////////////MODIFICAÇÃO NO REGISTRO, POIS PRECISA SER GRAVADO////////////////////////////////
+
+// FILE *pont_arq;
+// int i;
+
+// pont_arq = fopen("TesteCovid2.txt", "w");
+
+// if (pont_arq == NULL)
+
+// {
+
+//   printf("ERRO NA  ABERTURA");
+//   return 1;
+// }
+
+// for (i = *posicao; i < (num_testes + *posicao); i++)
+// {
+
+//   printf("\nTeste %d\n\n", i + 1);
+//   //Passando numero do teste
+//   printf("Digite o nome: ");
+//   gets((*testes)[i].Nome);
+
+//   printf("Digite seu CPF: ");
+//   gets((*testes)[i].CPF);
+//   getchar();
+
+//   printf("Data de nascimento (D/M/A)");
+//   printf("\nDia: ");
+//   scanf("%d", &(*testes)[i].nascimento.dia);
+//   getchar();
+
+//   printf("Mes: ");
+//   scanf("%d", &(*testes)[i].nascimento.mes);
+//   getchar();
+
+//   printf("Ano: ");
+//   scanf("%d", &(*testes)[i].nascimento.ano);
+//   getchar();
+
+//   printf("Digite seu sexo [M/F]: ");
+//   scanf("%c", &(*testes)[i].Sexo);
+//   getchar();
+
+//   printf("Digite seu bairro: ");
+//   gets((*testes)[i].Bairro);
+
+//   printf("Digite o resultado do seu teste [P/N]: ");
+//   gets((*testes)[i].COVID19);
+
+//   strcpy((*testes)[i].valido, "SIM");
+// }
+
+// *posicao += num_testes;
+// }
+
+// fclose(pont_arq);
+// }
 
 // Cancela testes cadastrados
 void cancela_teste(Cadastro cadastros[], int num_teste)
