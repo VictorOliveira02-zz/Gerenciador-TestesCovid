@@ -1,10 +1,9 @@
 /*
-                                      Universidade Federal de Viçosa - CRP
+                                      Universidade Federal de Vicosa - CRP
                                                   13/05/2021
-
     -> SIN110 - Prof. Matheus Haddad e Prof. Leandro Furtado
     -> Trabalho Final - testesCovid
-    -> Reposiório do projeto: https://github.com/VictorOliveira02/Gerenciador-TestesCovid
+    -> Repositorio do projeto: https://github.com/VictorOliveira02/Gerenciador-TestesCovid
 
 *Victor Alves de Oliveira -  6954 - T1
 *Rafael Mantovani de Souza - 7319 - T1
@@ -44,7 +43,7 @@ typedef struct sCadastro
   char Bairro[20];
   char COVID19[3];
   Data nascimento;
-  char valido[4];
+  char valido;
 
 } Cadastro;
 
@@ -55,10 +54,8 @@ void Cadastrar_testes(Cadastro **testes, int *posicao)
   //pergunta ao usuario o numero de cadastros a ser preenchido.
   int num_testes, i;
 
-  printf("Digite o numero de testes que serao cadastrados: \n");
+  printf("Digite o numero de testes que serao cadastrados: ");
   scanf("%d", &num_testes);
-
-  getchar();
 
   //chamar função  malloc aqui
   if (*testes == NULL)
@@ -80,19 +77,19 @@ void Cadastrar_testes(Cadastro **testes, int *posicao)
   for (i = *posicao; i < (num_testes + *posicao); i++)
   {
 
-    printf("\nTeste %d\n\n", i + 1);
+    printf("\nTeste %d\n", i + 1);
     //Passando numero do teste
-    printf("Digite o nome: ");
+    printf("\nDigite o nome: ");
     gets((*testes)[i].Nome);
 
     printf("Digite seu CPF: ");
-    gets((*testes)[i].CPF);
     getchar();
+    gets((*testes)[i].CPF);
 
     printf("Data de nascimento (D/M/A)");
+    getchar();
     printf("\nDia: ");
     scanf("%d", &(*testes)[i].nascimento.dia);
-    getchar();
 
     printf("Mes: ");
     scanf("%d", &(*testes)[i].nascimento.mes);
@@ -112,11 +109,12 @@ void Cadastrar_testes(Cadastro **testes, int *posicao)
     printf("Digite o resultado do seu teste [P/N]: ");
     gets((*testes)[i].COVID19);
 
-    strcpy((*testes)[i].valido, "SIM");
+    strcpy((*testes)[i].valido, "S");
   }
 
   *posicao += num_testes;
 }
+
 //imprime cadatros
 void imprime_cad(Cadastro cadastro)
 {
@@ -127,7 +125,7 @@ void imprime_cad(Cadastro cadastro)
   printf("Sexo: %c\n", cadastro.Sexo);
   printf("Bairro: %s \n", cadastro.Bairro);
   printf("COVID-19: %s \n", cadastro.COVID19);
-  printf("Valido: %s \n", cadastro.valido);
+  printf("Valido: %c \n", cadastro.valido);
 }
 
 //consulta o teste pelo nome cadastrado.
@@ -161,7 +159,7 @@ void consulta(char nome[], int quant_testes, Cadastro testes[])
     printf("Sexo: %c\n", testes[aux].Sexo);
     printf("Bairro: %s \n", testes[aux].Bairro);
     printf("COVID-19: %s \n", testes[aux].COVID19);
-    printf("Valido: %s \n ", testes[aux].valido);
+    printf("Valido: %c \n ", testes[aux].valido);
   }
   else
   {
@@ -175,7 +173,7 @@ void consulta(char nome[], int quant_testes, Cadastro testes[])
 void cancela_teste(Cadastro cadastros[], int num_teste)
 {
   int indice;
-  char opcao[3];
+  char opcao;
 
   indice = num_teste - 1;
 
@@ -184,25 +182,25 @@ void cancela_teste(Cadastro cadastros[], int num_teste)
   printf("\n\n");
 
   printf("Deseja realmente cancelar o teste %d ?[S/N]: ", num_teste);
-  scanf("%s", &opcao);
+  scanf("%c", &opcao);
 
   if (opcao == "S")
   {
-    strcpy(cadastros[indice].valido, "NAO");
+    strcpy(cadastros[indice].valido, "N");
     printf("Cancelado com sucesso!!!");
   }
   getchar();
 }
 
-void salavr_txt(char nome_teste_txt[], int quant_testes, Cadastro testes[])
+void salvar_txt(char nome_teste_txt[], int quant_testes, Cadastro testes[])
 {
-  // criando a variável ponteiro para o arquivo
+  //criando a varivel ponteiro para o arquivo
   FILE *arquivo;
 
   //abrindo o arquivo
   arquivo = fopen(nome_teste_txt, "a");
 
-  //mensagem para o usuário
+  //mensagem para o usuario
   if (arquivo == NULL)
   {
     printf("Erro ao abrir arquivo!");
@@ -228,6 +226,110 @@ void salavr_txt(char nome_teste_txt[], int quant_testes, Cadastro testes[])
 
   fclose(arquivo);
   getchar();
+}
+
+int num_infectados(Cadastro cadastros[], int quant_testes)
+{
+  int i, infectados;
+
+  infectados = 0;
+  //conta a quantidade de infectados
+  for (i = 0; i < quant_testes; i++)
+  {
+
+    if (strcmp(cadastros[i].COVID19, "P") == 0)
+    {
+      infectados++;
+    }
+  }
+
+  return infectados;
+}
+
+int jovens_infect(Cadastro cadastros[], int quant_testes)
+{
+  int i, jovens;
+
+  jovens = 0;
+
+  for (i = 0; i < quant_testes; i++)
+  {
+    if ((idade_atual(cadastros[i].nascimento.ano) < 20) && (strcmp(cadastros[i].COVID19, "P") == 0))
+    {
+      jovens++;
+    }
+  }
+
+  return jovens;
+}
+
+int adultos_infect(Cadastro cadastros[], int quant_testes)
+{
+  int i, adultos;
+
+  adultos = 0;
+  for (i = 0; i < quant_testes; i++)
+  {
+    if ((idade_atual(cadastros[i].nascimento.ano) < 60) && (strcmp(cadastros[i].COVID19, "P") == 0))
+    {
+      adultos++;
+    }
+  }
+
+  return adultos;
+}
+
+int idosos_infect(Cadastro cadastros[], int quant_testes)
+{
+  int i, idosos;
+
+  idosos = 0;
+  for (i = 0; i < quant_testes; i++)
+  {
+    if ((idade_atual(cadastros[i].nascimento.ano) >= 60) && (strcmp(cadastros[i].COVID19, "P") == 0))
+    {
+      idosos++;
+    }
+  }
+
+  return idosos;
+}
+
+float porcentagem(int total, int quant_element)
+{
+  float pct;
+
+  pct = (quant_element * 100.0) / total;
+
+  return pct;
+}
+
+void relatorio(Cadastro cadastros[], int quant_testes)
+{
+  float pct_jovens, pct_adultos, pct_idosos, pct_infectados, pct_naoinfectados;
+  int jovens, adultos, idosos, nao_infectados, pessoa_infectada;
+
+  printf("Total de pessoas cadastradas: %d\n", quant_testes);
+
+  pessoa_infectada = num_infectados(cadastros, quant_testes);
+  nao_infectados = quant_testes - pessoa_infectada;
+
+  pct_infectados = porcentagem(quant_testes, pessoa_infectada);
+  pct_naoinfectados = porcentagem(quant_testes, nao_infectados);
+
+  jovens = jovens_infect(cadastros, quant_testes);
+  adultos = adultos_infect(cadastros, quant_testes);
+  idosos = idosos_infect(cadastros, quant_testes);
+
+  pct_jovens = porcentagem(pessoa_infectada, jovens);
+  pct_adultos = porcentagem(pessoa_infectada, adultos);
+  pct_idosos = porcentagem(pessoa_infectada, idosos);
+
+  printf("Pessoas no infectadas: %d (%.2f)\n", nao_infectados, pct_naoinfectados);
+  printf("Pessoas infectadas: %d (%.2f)\n", pessoa_infectada, pct_infectados);
+  printf("\tJovens infectados:%d (%.2f dos infectados)\n", jovens, pct_jovens);
+  printf("\tAdultos infectados:%d (%.2f dos infectados)\n", adultos, pct_adultos);
+  printf("\tIdosos infectados:%d (%.2f dos infectados)\n", idosos, pct_idosos);
 }
 
 int main()
@@ -302,7 +404,10 @@ int main()
     case 4:
       printf("Como deseja nomear o arquivo ?: ");
       scanf("%s", &nome_teste_txt);
-      salvar_txt(nome_teste_txt, quant_testes);
+
+      salvar_txt(nome_teste_txt, quant_testes, testes);
+
+      getchar();
       printf("\n----------------------------------------------------------------------\n");
       break;
 
@@ -320,13 +425,12 @@ int main()
       break;
 
     case 6:
-
+      relatorio(testes, quant_testes);
       printf("\n----------------------------------------------------------------------\n");
       break;
     }
   }
 
   free(testes);
-
   return 0;
 }
