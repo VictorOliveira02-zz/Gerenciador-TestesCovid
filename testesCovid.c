@@ -229,7 +229,7 @@ void salvar_txt(char nome_teste_txt[], int quant_testes, Cadastro testes[])
 {
   //criando a varivel ponteiro para o arquivo
   FILE *arquivo;
-
+  strcat(nome_teste_txt, ".txt");
   //abrindo o arquivo
   arquivo = fopen(nome_teste_txt, "a");
 
